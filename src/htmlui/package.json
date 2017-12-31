@@ -1,0 +1,16 @@
+{
+  "name": "datavoyagerjl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "build": "browserify main.js -o bundle.js --ignore font-awesome-sass-loader",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "David Anthoff",
+  "license": "ISC",
+  "dependencies": {
+    "browserify": "^14.5.0",
+    "datavoyager": "^2.0.0-alpha.13"
+  }
+}

@@ -1,4 +1,4 @@
-using VegaVoyager
+using DataVoyager
 using Base.Test
 
 # write your own tests here
