@@ -9,3 +9,45 @@
 ## Overview
 
 This package provides julia integration for the [Voyager](https://github.com/vega/voyager) data exploration tool.
+
+## Getting Started
+
+DataVoyager.jl can be used for data exploration. It can help you visualize and understand any data that is in a tabular format.
+
+You can install the package via the julia package manager:
+````julia
+Pkg.add("DataVoyager")
+````
+
+You create a new voyager window by calling ``Voyager``:
+````julia
+using DataVoyager
+
+v = Voyager()
+````
+
+By itself this is not very useful, the next step is to load some data into voyager. Lets assume your data is in a ``DataFrame``:
+````julia
+using DataFrames, DataVoyager
+
+data = DataFrame(a=[rand(100), randn(100)])
+
+v = Voyager(data)
+````
+
+You can also use the pipe to load data into voyager:
+````julia
+using DataFrames, DataVoyager
+
+data = DataFrame(a=[rand(100), randn(100)])
+
+v = data |> Voyager()
+````
+
+You can load any [IterableTables.jl](https://github.com/davidanthoff/IterableTables.jl) source into voyager, i.e. not just ``DataFrame``s. For example, you can load some data from a CSV file with [CSVFiles.jl](https://github.com/davidanthoff/CSVFiles.jl), filter them with [Query.jl](https://github.com/davidanthoff/Query.jl) and then visualize the result with voyager:
+````julia
+using FileIO, CSVFiles, Query, DataVoyager
+
+load("data.csv") |> @filter(_.age>30) |> Voyager()
+````
+In this example the data is streamed directly into voyager and at no point is any ``DataFrame`` allocated.
