@@ -1,6 +1,6 @@
 module DataVoyager
 
-using Blink
+using Blink, DataValues
 
 import IteratorInterfaceExtensions, TableTraits, IterableTables
 
@@ -37,7 +37,11 @@ end
         push!(row_output.args, :(print(buf, "\"")))
         push!(row_output.args, :(print(buf, $("$v"))))
         push!(row_output.args, :(print(buf, "\": ")))
-        push!(row_output.args, :(print(buf, "\"", isnull(row[$i]) ? "" : get(row[$i]),"\"")))
+        if col_types[i] <: DataValue
+            push!(row_output.args, :(print(buf, "\"", isnull(row[$i]) ? "" : get(row[$i]),"\"")))
+        else
+            push!(row_output.args, :(print(buf, "\"", row[$i],"\"")))
+        end
     end
 
     quote
