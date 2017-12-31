@@ -9,14 +9,10 @@ export Voyager
 
 mutable struct Voyager
     w
-    function Voyager(data::AbstractString)
+    function Voyager()
         w = Blink.Window()
         
         loadurl(w, joinpath(@__DIR__, "htmlui", "main.html"))
-
-        jsdata = Blink.JSString(data)
-
-        @js w voyagerInstance.updateData($jsdata)
 
         new(w)
     end
@@ -63,14 +59,26 @@ end
     end
 end
 
-function Voyager(source)
+function (v::Voyager)(source)
     TableTraits.isiterabletable(source) || error("Only iterable tables accepted.")
 
     it = IteratorInterfaceExtensions.getiterator(source)
 
     data = format_iterable_table_as_json(it)
 
-    return Voyager(data)
+    jsdata = Blink.JSString(data)
+
+    @js v.w voyagerInstance.updateData($jsdata)
+
+    return nothing
+end
+
+function Voyager(source)
+    v = Voyager()
+
+    v(source)
+
+    return v
 end
 
 end # module
