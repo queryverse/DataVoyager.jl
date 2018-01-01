@@ -26,6 +26,8 @@ end
 
     row_output = Expr(:block)
 
+    format_strings = String[]
+
     for (i,v) in enumerate(col_names)
         if i>1
             push!(row_output.args, :(print(buf, ", ")))
@@ -39,9 +41,17 @@ end
         else
             push!(row_output.args, :(print(buf, "\"", row[$i],"\"")))
         end
+
+        actual_format_spec = "String"
+        if col_types[i] <: Number || (col_types[i] <: DataValue && eltype(col_types[i]) <: Number)
+            actual_format_spec = "number"
+        end
+        push!(format_strings, "\"$(col_names[i])\": \"$actual_format_spec\"")
     end
 
-    quote
+    format_string = join(format_strings, ",")
+
+    r = quote
         buf = IOBuffer()
         print(buf, "{\"values\":[")
         for (i,row) in enumerate(it)
@@ -53,10 +63,16 @@ end
             $(row_output)
             print(buf, "}")
         end
-        print(buf, "]}")
+        print(buf, "],")
+        print(buf, "\"format\":{\"parse\":{")
+        print(buf, $format_string)
+        print(buf, "}}")
+        print(buf, "}")
 
         return String(take!(buf))
     end
+    # println(r)
+    return r
 end
 
 function (v::Voyager)(source)
@@ -65,6 +81,8 @@ function (v::Voyager)(source)
     it = IteratorInterfaceExtensions.getiterator(source)
 
     data = format_iterable_table_as_json(it)
+
+    # println(data)
 
     jsdata = Blink.JSString(data)
 
