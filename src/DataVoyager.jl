@@ -3,7 +3,7 @@ module DataVoyager
 
 using Blink, DataValues
 
-import IteratorInterfaceExtensions, TableTraits, IterableTables
+import IteratorInterfaceExtensions, TableTraits, IterableTables, JSON
 
 export Voyager
 
@@ -35,7 +35,13 @@ end
         push!(row_output.args, :(print(buf, $("$v"))))
         push!(row_output.args, :(print(buf, "\": ")))
         if col_types[i] <: DataValue
-            push!(row_output.args, :(print(buf, "\"", isnull(row[$i]) ? "" : get(row[$i]),"\"")))
+            push!(row_output.args, quote
+                if isnull(row[$i])
+                    print(buf, "null")
+                else
+                    JSON.show_string(buf, get(row[$i]))
+                end
+            end)
         else
             push!(row_output.args, :(print(buf, "\"", row[$i],"\"")))
         end
