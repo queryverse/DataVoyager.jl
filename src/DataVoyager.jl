@@ -39,11 +39,11 @@ end
                 if isnull(row[$i])
                     print(buf, "null")
                 else
-                    JSON.show_string(buf, get(row[$i]))
+                    JSON.print(buf, get(row[$i]))
                 end
             end)
         else
-            push!(row_output.args, :(print(buf, "\"", row[$i],"\"")))
+            push!(row_output.args, :(JSON.print(buf, row[$i])))
         end
     end
 
