@@ -16,7 +16,7 @@ DataVoyager.jl can be used for data exploration. It can help you visualize and u
 
 You can install the package via the julia package manager:
 ````julia
-Pkg.clone("https://github.com/davidanthoff/DataVoyager.jl")
+Pkg.add("DataVoyager")
 ````
 
 You create a new voyager window by calling ``Voyager``:
