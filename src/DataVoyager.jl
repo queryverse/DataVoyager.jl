@@ -12,7 +12,7 @@ mutable struct Voyager
     function Voyager()
         w = Blink.Window()
         
-        loadurl(w, joinpath(@__DIR__, "htmlui", "main.html"))
+        loadfile(w, joinpath(@__DIR__, "htmlui", "main.html"))
 
         new(w)
     end
