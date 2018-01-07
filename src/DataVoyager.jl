@@ -25,7 +25,7 @@ function (v::Voyager)(source)
 
     data_dict = Dict()
 
-    data_dict["values"] = [Dict(c[1]=>isnull(c[2]) ? nothing : get(c[2]) for c in zip(keys(r), values(r))) for r in it]
+    data_dict["values"] = [Dict(c[1]=>isa(c[2], DataValue) ? (isnull(c[2]) ? nothing : get(c[2])) : c[2] for c in zip(keys(r), values(r))) for r in it]
 
     data = JSON.json(data_dict)
 
