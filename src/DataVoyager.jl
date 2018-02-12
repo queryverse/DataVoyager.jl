@@ -1,7 +1,7 @@
 __precompile__()
 module DataVoyager
 
-using Blink, DataValues
+using Electron, DataValues, VegaLite, URIParser
 
 import IteratorInterfaceExtensions, TableTraits, IterableTables, JSON
 
@@ -10,9 +10,9 @@ export Voyager
 mutable struct Voyager
     w
     function Voyager()
-        w = Blink.Window()
+        main_html_uri = string("file:///", replace(joinpath(@__DIR__, "htmlui", "main.html"), '\\', '/'))
 
-        loadfile(w, joinpath(@__DIR__, "htmlui", "main.html"))
+        w = Window(URI(main_html_uri))
 
         new(w)
     end
@@ -29,11 +29,27 @@ function (v::Voyager)(source)
 
     data = JSON.json(data_dict)
 
-    jsdata = Blink.JSString(data)
+    code = "voyagerInstance.updateData($data)"
 
-    @js v.w voyagerInstance.updateData($jsdata)
+    run(v.w, code)
 
     return nothing
+end
+
+function Base.getindex(v::Voyager)
+    code = "voyagerInstance.getSpec(true)"
+
+    content = run(v.w, code)
+
+    return VegaLite.VLSpec{:plot}(content)
+end
+
+function Base.getindex(v::Voyager, index::Int)
+    code = "voyagerInstance.getBookmarkedSpecs()"
+
+    content = run(v.w, code)
+
+    return VegaLite.VLSpec{:plot}(JSON.parse(content[index]))
 end
 
 function Voyager(source)
