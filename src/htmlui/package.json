@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "browserify": "^14.5.0",
-    "datavoyager": "^2.0.0-alpha.14"
+    "datavoyager": "^2.0.0-alpha.15"
   }
 }
