@@ -1,7 +1,7 @@
 __precompile__()
 module DataVoyager
 
-using Electron, DataValues, VegaLite, URIParser
+using Electron, DataValues, VegaLite
 
 import IteratorInterfaceExtensions, TableTraits, IterableTables, JSON
 
