@@ -21,7 +21,7 @@ mutable struct Voyager
             app = Application()
         end
 
-        w = Window(app, URI(main_html_uri), Dict("title"=>"Data Voyager"))
+        w = Window(app, URI(main_html_uri), options=Dict("title"=>"Data Voyager"))
 
         new(w)
     end
