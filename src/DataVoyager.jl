@@ -15,7 +15,9 @@ mutable struct Voyager
     function Voyager()
         main_html_uri = string("file:///", replace(joinpath(@__DIR__, "htmlui", "main.html"), '\\', '/'))
 
-        if app===nothing
+        global app
+
+        if app==nothing
             app = Application()
         end
 
