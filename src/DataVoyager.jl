@@ -1,18 +1,24 @@
 __precompile__()
 module DataVoyager
 
-using Electron, DataValues, VegaLite
+using Electron, DataValues
 
 import IteratorInterfaceExtensions, TableTraits, IterableTables, JSON
 
 export Voyager
+
+app = nothing
 
 mutable struct Voyager
     w
     function Voyager()
         main_html_uri = string("file:///", replace(joinpath(@__DIR__, "htmlui", "main.html"), '\\', '/'))
 
-        w = Window(URI(main_html_uri))
+        if app===nothing
+            app = Application()
+        end
+
+        w = Window(app, URI(main_html_uri), Dict("title"=>"Data Voyager"))
 
         new(w)
     end
@@ -36,21 +42,21 @@ function (v::Voyager)(source)
     return nothing
 end
 
-function Base.getindex(v::Voyager)
-    code = "voyagerInstance.getSpec(true)"
+# function Base.getindex(v::Voyager)
+#     code = "voyagerInstance.getSpec(true)"
 
-    content = run(v.w, code)
+#     content = run(v.w, code)
 
-    return VegaLite.VLSpec{:plot}(content)
-end
+#     return VegaLite.VLSpec{:plot}(content)
+# end
 
-function Base.getindex(v::Voyager, index::Int)
-    code = "voyagerInstance.getBookmarkedSpecs()"
+# function Base.getindex(v::Voyager, index::Int)
+#     code = "voyagerInstance.getBookmarkedSpecs()"
 
-    content = run(v.w, code)
+#     content = run(v.w, code)
 
-    return VegaLite.VLSpec{:plot}(JSON.parse(content[index]))
-end
+#     return VegaLite.VLSpec{:plot}(JSON.parse(content[index]))
+# end
 
 function Voyager(source)
     v = Voyager()
