@@ -1,3 +1,6 @@
+# DataVoyager.jl v0.1.1 Release Notes
+* Use newer voyager version
+
 # DataVoyager.jl v0.1.0 Release Notes
 * Use Electron.jl instead of Blink.jl
 
