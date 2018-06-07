@@ -3,7 +3,7 @@ module DataVoyager
 
 using Electron, DataValues
 
-import IteratorInterfaceExtensions, TableTraits, IterableTables, JSON
+import IteratorInterfaceExtensions, TableTraits, IterableTables, JSON, VegaLite
 
 export Voyager
 
@@ -42,21 +42,23 @@ function (v::Voyager)(source)
 
     run(v.w, code)
 
-    return nothing
+    return v
 end
 
-# function Base.getindex(v::Voyager)
-#     code = "voyagerInstance.getSpec(true)"
+function Base.getindex(v::Voyager)
+    code = "voyagerInstance.getSpec(true)"
 
-#     content = run(v.w, code)
+    content = run(v.w, code)
 
-#     return VegaLite.VLSpec{:plot}(content)
-# end
+    return VegaLite.VLSpec{:plot}(content)
+end
 
 # function Base.getindex(v::Voyager, index::Int)
 #     code = "voyagerInstance.getBookmarkedSpecs()"
 
 #     content = run(v.w, code)
+
+#     info(content)
 
 #     return VegaLite.VLSpec{:plot}(JSON.parse(content[index]))
 # end

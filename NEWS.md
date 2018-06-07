@@ -1,3 +1,6 @@
+# DataVoyager.jl v0.2.0 Release Notes
+* Add VegaLite.jl integration
+
 # DataVoyager.jl v0.1.1 Release Notes
 * Use newer voyager version
 
