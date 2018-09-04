@@ -1,35 +1,34 @@
-## Documentation: http://docs.travis-ci.com/user/languages/julia/
 language: julia
+sudo: required
 os:
   - linux
   - osx
 julia:
-  - 0.6
+  - 0.7
+  - 1.0
+  - nightly
 notifications:
   email: false
-git:
-  depth: 99999999
-
-## uncomment the following lines to allow failures on nightly julia
-## (tests will run but not make your overall status red)
-#matrix:
-#  allow_failures:
-#  - julia: nightly
-
-## uncomment and modify the following lines to manually install system packages
-#addons:
-#  apt: # apt-get for linux
-#    packages:
-#    - gfortran
-#before_script: # homebrew for mac
-#  - if [ $TRAVIS_OS_NAME = osx ]; then brew install gcc; fi
-
-# uncomment the following lines to override the default test script
+branches:
+  only:
+  - master
+  - /release-.*/
+  - /v(\d+)\.(\d+)\.(\d+)/
+matrix:
+  allow_failures:
+  - julia: nightly  
+addons:
+    apt:
+        packages:
+            - xvfb
+            - xauth
+            - libgtk-3-0
 script:
- - if [[ `uname` = "Linux" ]]; then TESTCMD="xvfb-run julia"; else TESTCMD="julia"; fi
- - $TESTCMD -e 'Pkg.clone(pwd()); Pkg.build("DataVoyager"); Pkg.test("DataVoyager"; coverage=true)'
+  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+  - if [[ `uname` = "Linux" ]]; then TESTCMD="xvfb-run julia"; else TESTCMD="julia"; fi
+  - $TESTCMD --check-bounds=yes -e 'using Pkg; Pkg.clone(pwd()); Pkg.build("DataVoyager"); Pkg.test("DataVoyager"; coverage=true)'
 after_success:
-  # push coverage results to Coveralls
-  - julia -e 'cd(Pkg.dir("DataVoyager")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
-  # push coverage results to Codecov
   - julia -e 'cd(Pkg.dir("DataVoyager")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - julia -e 'cd(Pkg.dir("DataVoyager")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+  - julia -e 'Pkg.add("Documenter")'
+  - julia -e 'cd(Pkg.dir("DataVoyager")); include(joinpath("docs", "make.jl"))'
