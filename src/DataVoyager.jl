@@ -1,4 +1,3 @@
-__precompile__()
 module DataVoyager
 
 using Electron, DataValues
@@ -13,7 +12,7 @@ mutable struct Voyager
     w::Window
 
     function Voyager()
-        main_html_uri = string("file:///", replace(joinpath(@__DIR__, "htmlui", "main.html"), '\\', '/'))
+        main_html_uri = string("file:///", replace(joinpath(@__DIR__, "htmlui", "main.html"), '\\' => '/'))
 
         global app
 
@@ -28,13 +27,13 @@ mutable struct Voyager
 end
 
 function (v::Voyager)(source)
-    TableTraits.isiterabletable(source) || error("Only iterable tables accepted.")
+    TableTraits.isiterabletable(source)===false && error("'source' is not a table.")
 
     it = IteratorInterfaceExtensions.getiterator(source)
 
     data_dict = Dict()
 
-    data_dict["values"] = [Dict(c[1]=>isa(c[2], DataValue) ? (isnull(c[2]) ? nothing : get(c[2])) : c[2] for c in zip(keys(r), values(r))) for r in it]
+    data_dict["values"] = [Dict(c[1]=>isa(c[2], DataValue) ? (isna(c[2]) ? nothing : get(c[2])) : c[2] for c in zip(keys(r), values(r))) for r in it]
 
     data = JSON.json(data_dict)
 

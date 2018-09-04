@@ -1,13 +1,12 @@
 using DataVoyager
-using NamedTuples
 using DataValues
 using Electron
-using Base.Test
+using Test
 
 @testset "DataVoyager" begin
 
-source = [@NT(a=1,b=1), @NT(a=2,b=2)]
-source2 = [@NT(a=DataValue(1), DataValue{Int}()), @NT(a=DataValue{Int}(), b=DataValue(2))]
+source = [(a=1,b=1), (a=2,b=2)]
+source2 = [(a=DataValue(1), b=DataValue{Int}()), (a=DataValue{Int}(), b=DataValue(2))]
 
 v = Voyager()
 @test typeof(v.w) == Electron.Window
