@@ -31,9 +31,9 @@ function (v::Voyager)(source)
 
     it = IteratorInterfaceExtensions.getiterator(source)
 
-    data_dict = Dict()
+    data_dict = Dict{String,Any}()
 
-    data_dict["values"] = [Dict(c[1]=>isa(c[2], DataValue) ? (isna(c[2]) ? nothing : get(c[2])) : c[2] for c in zip(keys(r), values(r))) for r in it]
+    data_dict["values"] = [Dict{Symbol,Any}(c[1]=>isa(c[2], DataValue) ? (isna(c[2]) ? nothing : get(c[2])) : c[2] for c in zip(keys(r), values(r))) for r in it]
 
     data = JSON.json(data_dict)
 
