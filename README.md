@@ -44,6 +44,13 @@ data = DataFrame(a=[rand(100), randn(100)])
 v = data |> Voyager()
 ````
 
+With a more interesting data source
+```julia
+using VegaDatasets, DataVoyager
+
+dataset("cars") |> Voyager()
+```
+
 You can load any [IterableTables.jl](https://github.com/queryverse/IterableTables.jl) source into voyager, i.e. not just ``DataFrame``s. For example, you can load some data from a CSV file with [CSVFiles.jl](https://github.com/queryverse/CSVFiles.jl), filter them with [Query.jl](https://github.com/queryverse/Query.jl) and then visualize the result with voyager:
 ````julia
 using FileIO, CSVFiles, Query, DataVoyager
