@@ -14,10 +14,12 @@ This package provides julia integration for the [Voyager](https://github.com/veg
 
 DataVoyager.jl can be used for data exploration. It can help you visualize and understand any data that is in a tabular format.
 
-You can install the package via the julia package manager:
+You can install the package at the Pkg REPL-mode with:
 ````julia
-Pkg.add("DataVoyager")
+(v1.0) pkg> add DataVoyager
 ````
+
+## Exploring data
 
 You create a new voyager window by calling ``Voyager``:
 ````julia
@@ -48,13 +50,35 @@ With a more interesting data source
 ```julia
 using VegaDatasets, DataVoyager
 
-dataset("cars") |> Voyager()
+v = dataset("cars") |> Voyager()
 ```
 
 You can load any [IterableTables.jl](https://github.com/queryverse/IterableTables.jl) source into voyager, i.e. not just ``DataFrame``s. For example, you can load some data from a CSV file with [CSVFiles.jl](https://github.com/queryverse/CSVFiles.jl), filter them with [Query.jl](https://github.com/queryverse/Query.jl) and then visualize the result with voyager:
 ````julia
 using FileIO, CSVFiles, Query, DataVoyager
 
-load("data.csv") |> @filter(_.age>30) |> Voyager()
+v = load("data.csv") |> @filter(_.age>30) |> Voyager()
 ````
 In this example the data is streamed directly into voyager and at no point is any ``DataFrame`` allocated.
+
+## Extracting plots
+
+You can also access a plot that you have created in the voyager UI from julia, for example to save the plot to disc.
+
+You can access the currently active plot in a given voyager window ``v`` with the brackets syntax:
+
+````julia
+using VegaDatasets, DataVoyager, VegaLite
+
+v = dataset("cars") |> Voyager()
+
+plot1 = v[]
+````
+
+At this point ``plot1`` will hold a standard [VegaLite.jl](https://github.com/fredo-dedup/VegaLite.jl) plot object. You can use the normal [VegaLite.jl](https://github.com/fredo-dedup/VegaLite.jl) functions to display such a plot, or save it to disc:
+
+````julia
+display(plot1)
+
+plot1 |> save("figure1.pdf")
+````
