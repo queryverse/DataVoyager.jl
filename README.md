@@ -32,7 +32,7 @@ By itself this is not very useful, the next step is to load some data into voyag
 ````julia
 using DataFrames, DataVoyager
 
-data = DataFrame(a=[rand(100), randn(100)])
+data = DataFrame(a=rand(100), b=randn(100))
 
 v = Voyager(data)
 ````
@@ -41,7 +41,7 @@ You can also use the pipe to load data into voyager:
 ````julia
 using DataFrames, DataVoyager
 
-data = DataFrame(a=[rand(100), randn(100)])
+data = DataFrame(a=rand(100), b=randn(100))
 
 v = data |> Voyager()
 ````
@@ -81,4 +81,24 @@ At this point ``plot1`` will hold a standard [VegaLite.jl](https://github.com/fr
 display(plot1)
 
 plot1 |> save("figure1.pdf")
+````
+
+A useful pattern here is to save the plot as a vega-lite JSON file to disc, without the data:
+
+````julia
+using VegaDatasets, DataVoyager, VegaLite
+
+v = dataset("cars") |> Voyager()
+
+# Now create the plot in the UI
+
+v[] |> save("figure1.vegalite")
+````
+
+At a later point you can then load this figure specification again, but pipe new data into it:
+
+````julia
+using VegaLite, VegaDatasets
+
+dataset("cars") |> load("figure1.vegalite")
 ````
