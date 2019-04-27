@@ -1,3 +1,7 @@
+# DataVoyager.jl v1.0.0 Release Notes
+* Drop julia 0.7 support
+* Move to Project.toml
+
 # DataVoyager.jl v0.3.1 Release Notes
 * Fix a bug in the JSON conversion
 
