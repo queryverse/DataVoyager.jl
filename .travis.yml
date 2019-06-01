@@ -1,5 +1,4 @@
 language: julia
-sudo: required
 os:
   - linux
   - osx
@@ -8,6 +7,13 @@ julia:
   - 1.1
   - 1.2
   - nightly
+dist: xenial
+services:
+  - xvfb
+addons:
+  apt:
+    packages:
+    - libgconf-2-4
 notifications:
   email: false
 branches:
@@ -18,16 +24,6 @@ branches:
 matrix:
   allow_failures:
   - julia: nightly
-addons:
-    apt:
-        packages:
-            - xvfb
-            - xauth
-            - libgtk-3-0
-script:
-  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-  - if [[ `uname` = "Linux" ]]; then TESTCMD="xvfb-run julia"; else TESTCMD="julia"; fi
-  - $TESTCMD --check-bounds=yes -e 'using Pkg; Pkg.clone(pwd()); Pkg.build("DataVoyager"); Pkg.test("DataVoyager"; coverage=true)'
 after_success:
   - julia -e 'using Pkg; cd(Pkg.dir("DataVoyager")); Pkg.add("Coverage"); using Coverage; Codecov.submit(process_folder())'
 
