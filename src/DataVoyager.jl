@@ -49,7 +49,7 @@ function Base.getindex(v::Voyager)
 
     content = run(v.w, code)
 
-    return VegaLite.VLSpec{:plot}(content)
+    return VegaLite.VLSpec(content)
 end
 
 # function Base.getindex(v::Voyager, index::Int)
@@ -59,7 +59,7 @@ end
 
 #     info(content)
 
-#     return VegaLite.VLSpec{:plot}(JSON.parse(content[index]))
+#     return VegaLite.VLSpec(JSON.parse(content[index]))
 # end
 
 function Voyager(source)
