@@ -1,6 +1,6 @@
 name = "DataVoyager"
 uuid = "5721bf48-af8e-5845-8445-c9e18126e773"
-version = "0.3.2-DEV"
+version = "1.0.0"
 
 [deps]
 DataValues = "e7dc6d0d-1eca-5fa6-8ad6-5aecde8b7ea5"
