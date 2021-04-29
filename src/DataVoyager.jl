@@ -12,7 +12,7 @@ mutable struct Voyager
     w::Window
 
     function Voyager()
-        main_html_uri = string("file:///", replace(joinpath(@__DIR__, "htmlui", "main.html"), '\\' => '/'))
+        main_html_uri = string("file:///", replace(replace(joinpath(@__DIR__, "htmlui", "main.html"), '\\' => '/'), " " => "%20"))
 
         global app
 
