@@ -16,7 +16,7 @@ mutable struct Voyager
 
         global app
 
-        if app == nothing
+        if app === nothing
             app = Application()
         end
 
