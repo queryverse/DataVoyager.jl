@@ -1,6 +1,6 @@
 module DataVoyager
 
-using Electron, DataValues
+using Electron, DataValues, FilePaths
 
 import IteratorInterfaceExtensions, TableTraits, IterableTables, JSON, VegaLite
 
@@ -12,7 +12,7 @@ mutable struct Voyager
     w::Window
 
     function Voyager()
-        main_html_uri = string("file:///", replace(joinpath(@__DIR__, "htmlui", "main.html"), '\\' => '/'))
+        main_html_uri = URI(joinpath(@__PATH__, "htmlui", "main.html"))
 
         global app
 
@@ -20,7 +20,7 @@ mutable struct Voyager
             app = Application()
         end
 
-        w = Window(app, URI(main_html_uri), options=Dict("title" => "Data Voyager"))
+        w = Window(app, main_html_uri, options=Dict("title" => "Data Voyager"))
 
         new(w)
     end
