@@ -7,8 +7,8 @@ Electron.prep_test_env()
 
 @testset "DataVoyager" begin
 
-    source = [(a = 1, b = 1), (a = 2, b = 2)]
-    source2 = [(a = DataValue(1), b = DataValue{Int}()), (a = DataValue{Int}(), b = DataValue(2))]
+    source = [(a=1, b=1), (a=2, b=2)]
+    source2 = [(a=DataValue(1), b=DataValue{Int}()), (a=DataValue{Int}(), b=DataValue(2))]
 
     v = Voyager()
     @test typeof(v.w) == Electron.Window
