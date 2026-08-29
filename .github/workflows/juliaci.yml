@@ -12,6 +12,7 @@ jobs:
     with:
       include-all-compatible-minor-versions: true
       include-rc-versions: true
+      include-linux-x86: false
     permissions: write-all
     secrets:
       codecov_token: ${{ secrets.CODECOV_TOKEN }}
