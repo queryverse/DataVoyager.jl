@@ -14,6 +14,7 @@ jobs:
       include-rc-versions: true
       include-linux-x86: false
       testitem-timeout: 900
+      github_job_prep_script: .github/workflows/ci_prep.jl
     permissions: write-all
     secrets:
       codecov_token: ${{ secrets.CODECOV_TOKEN }}
