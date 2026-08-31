@@ -3,3 +3,7 @@
 *.jl.mem
 src/htmlui/node_modules
 .vscode
+docs/build/
+docs/Manifest.toml
+test-output*.*
+Manifest.toml
